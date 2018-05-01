@@ -1,0 +1,82 @@
+apply plugin: 'kotlin2js'
+apply plugin: 'org.jetbrains.kotlin.frontend'
+
+buildscript {
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-eap"
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:$kotlinFrontendPluginVersion"
+    }
+}
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+}
+
+compileKotlin2Js {
+    kotlinOptions {
+        metaInfo = true
+        moduleKind = 'commonjs'
+        outputFile = "$projectDir/build/classes/main/${project.name}.js"
+        if (!production) {
+            sourceMap = true
+            sourceMapEmbedSources = "always"
+            suppressWarnings = true
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url "https://dl.bintray.com/kotlin/kotlin-eap"
+    }
+    maven {
+        url "https://dl.bintray.com/vkhikhlov/kotlin-vue-wrappers"
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion"
+    compile "org.jetbrains.kotlinx:kotlinx-html-js:$kotlinxHtmlVersion"
+    compile "com.github.vkhikhlov:kotlin-vue:0.0.3"
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
+
+kotlinFrontend {
+    downloadNodeJsVersion = "latest"
+    if (!production) {
+        sourceMaps = true
+    }
+
+    npm {
+        dependency("vue", "latest")
+
+        devDependency("html-webpack-plugin", "latest")
+        devDependency("webpack", "latest")
+        devDependency("webpack-dev-server", "latest")
+    }
+
+    webpackBundle {
+        bundleName = "main"
+        contentPath = file('src/main/resources')
+        port = 8088
+        mode = production.toBoolean() ? 'production' : 'development'
+    }
+
+    define('PRODUCTION', production.toBoolean())
+}
