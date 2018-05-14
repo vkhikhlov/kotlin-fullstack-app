@@ -6,25 +6,28 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import modules.articles.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.SchemaUtils.create
-
-data class City(val id: Int? = null, val name: String)
-
-object Cities : Table() {
-    val id = integer("id").autoIncrement().primaryKey()
-    var name = varchar("name", 50)
-}
 
 fun main(args: Array<String>) {
     Database.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", driver = "org.h2.Driver")
     transaction {
         logger.addLogger(StdOutSqlLogger)
-        create(Cities)
-        Cities.insert {
-            it[name] = "St. Petersburg"
-        } get Cities.id
+        initArticles()
+        val hello = Word.new { name = "hello" }
+        val world = Word.new { name = "world" }
+        val art = Article.new { title = "hello world sample" }
+
+        WordAndArticle.new {
+            article = art
+            word = hello
+        }
+
+        WordAndArticle.new {
+            article = art
+            word = world
+        }
     }
     embeddedServer(
             Netty, watchPaths = listOf("backend"), port = 8080,
@@ -37,12 +40,13 @@ fun Application.myModule() {
         register(ContentType.Application.Json, GsonConverter())
     }
     routing {
-        get("/") {
-            val city = transaction {
-                val row = Cities.selectAll().single()
-                City(row[Cities.id], row[Cities.name])
-            }
-            call.respond(city)
+        get("/words") {
+            val words = transaction { Article.all().first().words.map { Words.Word(it.name) } }
+            call.respond(words)
+        }
+        get("/articles") {
+            val articles = transaction { Word.all().first().articles.map { Articles.Article(it.title) } }
+            call.respond(articles)
         }
     }
 }
