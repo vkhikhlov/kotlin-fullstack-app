@@ -2,6 +2,8 @@ import io.ktor.application.*
 import io.ktor.features.ContentNegotiation
 import io.ktor.gson.GsonConverter
 import io.ktor.http.ContentType
+import io.ktor.locations.Locations
+import io.ktor.locations.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
@@ -18,7 +20,6 @@ fun main(args: Array<String>) {
         val hello = Word.new { name = "hello" }
         val world = Word.new { name = "world" }
         val art = Article.new { title = "hello world sample" }
-
         WordAndArticle.new {
             article = art
             word = hello
@@ -35,18 +36,31 @@ fun main(args: Array<String>) {
     ).start(true)
 }
 
+@location("/word/{wordId}/")
+data class WordsLocation(val wordId: Int)
+
+@location("/article/{articleId}/")
+data class ArticlesLocation(val articleId: Int)
+
 fun Application.myModule() {
     install(ContentNegotiation) {
         register(ContentType.Application.Json, GsonConverter())
     }
+    install(Locations)
     routing {
-        get("/words") {
-            val words = transaction { Article.all().first().words.map { Words.Word(it.name) } }
-            call.respond(words)
+        get<WordsLocation> { data ->
+            val word = transaction {
+                val word = Word.find { Words.id eq data.wordId }.firstOrNull()
+                mapOf("name" to word?.name, "articles" to word?.articles?.map { mapOf("title" to it.title) })
+            }
+            call.respond(word)
         }
-        get("/articles") {
-            val articles = transaction { Word.all().first().articles.map { Articles.Article(it.title) } }
-            call.respond(articles)
+        get<ArticlesLocation> { data ->
+            val article = transaction {
+                val article = Article.find { Articles.id eq data.articleId }.firstOrNull()
+                mapOf("title" to article?.title, "words" to article?.words?.map { mapOf("name" to it.name) })
+            }
+            call.respond(article)
         }
     }
 }

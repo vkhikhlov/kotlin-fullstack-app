@@ -27,6 +27,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     compile "io.ktor:ktor-server-netty:$ktorVersion"
     compile "io.ktor:ktor-gson:$ktorVersion"
+    compile "io.ktor:ktor-locations:$ktorVersion"
     compile "org.jetbrains.exposed:exposed:$exposedVersion"
     compile "com.h2database:h2:latest.release"
     compile "ch.qos.logback:logback-classic:latest.release"

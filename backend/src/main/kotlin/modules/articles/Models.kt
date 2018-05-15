@@ -6,14 +6,10 @@ import org.jetbrains.exposed.sql.SchemaUtils.create
 
 object Articles : IntIdTable() {
     var title = varchar("name", 200)
-
-    data class Article(val title: String = "defaultTitle")
 }
 
 object Words : IntIdTable() {
     var name = varchar("name", 50)
-
-    data class Word(val name: String = "defaultName")
 }
 
 object WordsAndArticles : IntIdTable() {
