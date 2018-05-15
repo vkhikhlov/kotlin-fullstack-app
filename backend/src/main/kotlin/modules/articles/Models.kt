@@ -40,6 +40,4 @@ class WordAndArticle(id: EntityID<Int>) : IntEntity(id) {
     var article by Article referencedOn WordsAndArticles.article
 }
 
-inline fun Transaction.initArticles(fn: Transaction.() -> Unit = { create(Articles, Words, WordsAndArticles) }) {
-    this.fn()
-}
+fun Transaction.initArticles() = let { create(Articles, Words, WordsAndArticles) }
