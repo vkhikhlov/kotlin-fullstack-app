@@ -7,7 +7,7 @@ buildscript {
         mavenCentral()
         jcenter()
         maven {
-            url "https://dl.bintray.com/kotlin/kotlin-eap"
+            url 'https://dl.bintray.com/kotlin/kotlin-eap'
         }
     }
     dependencies {
@@ -27,7 +27,7 @@ compileKotlin2Js {
         outputFile = "$projectDir/build/classes/main/${project.name}.js"
         if (!production) {
             sourceMap = true
-            sourceMapEmbedSources = "always"
+            sourceMapEmbedSources = 'always'
             suppressWarnings = true
         }
     }
@@ -37,10 +37,10 @@ repositories {
     mavenCentral()
     jcenter()
     maven {
-        url "https://dl.bintray.com/kotlin/kotlin-eap"
+        url 'https://dl.bintray.com/kotlin/kotlin-eap'
     }
     maven {
-        url "https://dl.bintray.com/vkhikhlov/kotlin-vue-wrappers"
+        url 'https://dl.bintray.com/vkhikhlov/kotlin-vue-wrappers'
     }
 //    flatDir {
 //        dirs(
@@ -53,8 +53,8 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion"
     compile "org.jetbrains.kotlinx:kotlinx-html-js:$kotlinxHtmlVersion"
-    compile "com.github.vkhikhlov:kotlin-vue:0.0.4"
-//    compile "com.github.vkhikhlov:kotlin-vue-extensions:0.0.2"
+    compile "com.github.vkhikhlov:kotlin-vue:0.0.5"
+    compile "com.github.vkhikhlov:kotlin-vue-extensions:0.0.2"
 }
 
 kotlin {
@@ -65,26 +65,27 @@ kotlin {
 
 
 kotlinFrontend {
-    downloadNodeJsVersion = "latest"
+    downloadNodeJsVersion = 'latest'
     if (!production) {
         sourceMaps = true
     }
 
     npm {
-        dependency("vue", "latest")
-        dependency("jquery", "latest")
-        dependency("semantic-ui", "latest")
+        dependency('vue', 'latest')
+        dependency('jquery', 'latest')
+        dependency('semantic-ui', 'latest')
+        dependency('vue-router', 'latest')
 
         devDependency('css-loader', 'latest')
         devDependency('style-loader', 'latest')
         devDependency('file-loader', 'latest')
-        devDependency("html-webpack-plugin", "latest")
-        devDependency("webpack", "latest")
-        devDependency("webpack-dev-server", "latest")
+        devDependency('html-webpack-plugin', 'latest')
+        devDependency('webpack', 'latest')
+        devDependency('webpack-dev-server', 'latest')
     }
 
     webpackBundle {
-        bundleName = "main"
+        bundleName = 'main'
         contentPath = file('src/main/resources')
         publicPath = (production.toBoolean()) ? '/static/' : '/'
         port = 8088

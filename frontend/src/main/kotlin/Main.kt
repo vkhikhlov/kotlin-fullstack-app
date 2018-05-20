@@ -1,7 +1,9 @@
-import components.panels.*
+import components.app.app
+import modules.articles.ArticleOptions
 import vue.*
 import vue.ext.jsObject
-import vue.vdom.*
+import vue.router.Router
+import vue.router.VueRouter
 
 external fun require(name: String): dynamic
 interface MainComponent : VueComponent<VData, VProps, VRefs>
@@ -10,24 +12,21 @@ interface MainComponent : VueComponent<VData, VProps, VRefs>
 fun main(args: Array<String>) {
     require("assets/semantic-ui/dist/semantic.js")
     require("assets/semantic-ui/dist/semantic.css")
+    Vue.use(VueRouter, null)
     val vm = Vue(object : VueOptions<VData, VProps, VRefs, VComputed, MainComponent>(MainComponent::class) {
-        override fun Template.render() = root {
-            div {
-                +"Hello World!"
-                tabPanel {
-                    type = TabPanelType.Horizontal(HorizontalDirection.RIGHT)
-                    items = mutableListOf()
-                    for (i in 1..4) {
-                        items.add(jsObject {
-                            id = i; title = "title$i"; content = "Content$i"
-                            type = if (i % 2 == 0) MenuItemType.LEFT else MenuItemType.RIGHT
-                        })
-                    }
-                }
-            }
+        init {
+            router = Router(jsObject {
+                routes = arrayOf(jsObject {
+                    path = "/articles"
+                    component = ArticleOptions
+                })
+                mode = "history"
+            })
+        }
 
+        override fun VBuilder.render() {
+            app()
         }
     })
-    console.log(vm)
     vm.mount("#app")
 }
