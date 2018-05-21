@@ -53,8 +53,8 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion"
     compile "org.jetbrains.kotlinx:kotlinx-html-js:$kotlinxHtmlVersion"
-    compile "com.github.vkhikhlov:kotlin-vue:0.0.5"
-    compile "com.github.vkhikhlov:kotlin-vue-extensions:0.0.2"
+    compile "com.github.vkhikhlov:kotlin-vue:0.0.6"
+//    compile "com.github.vkhikhlov:kotlin-vue-extensions:0.0.2"
 }
 
 kotlin {

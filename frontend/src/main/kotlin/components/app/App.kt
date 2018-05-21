@@ -9,29 +9,27 @@ import vue.router.*
 interface AppComponent : VueComponent<VData, VProps, VRefs>
 
 object AppOptions : VueOptions<VData, VProps, VRefs, VComputed, AppComponent>(AppComponent::class) {
-    override fun VBuilder.render() {
-        div {
-            v.bind.style {
-                height = "100%"
-                display = "flex"
-                flexDirection = "column"
-            }
-            div("ui secondary pointing menu") {
-                routerLink {
-                    +"Articles"
-                    v.bind.clazz { "active item" to true }
-                    v.props = jsObject<RouterLinkProps> {
-                        to = "/articles"
-                        activeClass = "selected"
-                    }
+    override fun VBuilder.render() = div {
+        v.bind.style {
+            height = "100%"
+            display = "flex"
+            flexDirection = "column"
+        }
+        div("ui secondary pointing menu") {
+            routerLink {
+                +"Articles"
+                v.bind.clazz { "active item" to true }
+                v.props = jsObject<RouterLinkProps> {
+                    to = "/articles"
+                    activeClass = "selected"
                 }
             }
-            div {
-                v.bind.style { height = "100%" }
-                routerView()
-            }
+        }
+        div {
+            v.bind.style { height = "100%" }
+            routerView()
         }
     }
 }
 
-fun VBuilder.app() = child(AppOptions)
+fun VBuilder.app(block: VBuilder.() -> Unit = {}) = child(AppOptions, block)

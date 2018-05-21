@@ -23,10 +23,7 @@ fun main(args: Array<String>) {
                 mode = "history"
             })
         }
-
-        override fun VBuilder.render() {
-            app()
-        }
+        override fun VBuilder.render() = app()
     })
     vm.mount("#app")
 }
