@@ -39,22 +39,22 @@ repositories {
     maven {
         url 'https://dl.bintray.com/kotlin/kotlin-eap'
     }
-    maven {
-        url 'https://dl.bintray.com/vkhikhlov/kotlin-vue-wrappers'
-    }
-//    flatDir {
-//        dirs(
-//                '../../kotlin-vue-wrappers/kotlin-vue/build/libs',
-//                '../../kotlin-vue-wrappers/kotlin-vue-extensions/build/libs'
-//        )
+//    maven {
+//        url 'https://dl.bintray.com/vkhikhlov/kotlin-vue-wrappers'
 //    }
+    flatDir {
+        dirs(
+                '../../kotlin-vue-wrappers/kotlin-vue/build/libs',
+                '../../kotlin-vue-wrappers/kotlin-vue-extensions/build/libs'
+        )
+    }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion"
     compile "org.jetbrains.kotlinx:kotlinx-html-js:$kotlinxHtmlVersion"
     compile "com.github.vkhikhlov:kotlin-vue:0.0.6"
-//    compile "com.github.vkhikhlov:kotlin-vue-extensions:0.0.2"
+    compile "com.github.vkhikhlov:kotlin-vue-extensions:0.0.2"
 }
 
 kotlin {

@@ -24,6 +24,40 @@ interface BaseModuleProps : VProps {
 
 interface BaseModuleComponent<out V : VData, out P : BaseModuleProps, out R : VRefs> : VueComponent<V, P, R>
 
+fun VBuilder.baseModuleTemplate() = div {
+    v.bind.style {
+        height = "100%"
+        display = "flex"
+        flexDirection = "column"
+    }
+    div("ui horizontal segments") {
+        v.bind.style { height = "100%" }
+        div("ui segment") {
+            tabPanel {
+                v.props = jsObject {
+                    type = TabPanelType.Horizontal(HorizontalDirection.LEFT)
+                    items = mutableListOf(jsObject {
+                        id = 1
+                        title = "Title"
+                        content = "Content"
+                        type = MenuItemType.LEFT
+                    })
+                }
+            }
+        }
+        div("ui segment") {
+            +"Middle"
+        }
+        div("ui segment") {
+            +"Right"
+        }
+    }
+    div("ui segment") {
+        +"Footer"
+        v.bind.style { textAlign = "center" }
+    }
+}
+
 open class BaseModule<
         out D : VData,
         out P : BaseModuleProps,
@@ -36,37 +70,5 @@ open class BaseModule<
         }
     }
 
-    override fun VBuilder.render() = div {
-        v.bind.style {
-            height = "100%"
-            display = "flex"
-            flexDirection = "column"
-        }
-        div("ui horizontal segments") {
-            v.bind.style { height = "100%" }
-            div("ui segment") {
-                tabPanel {
-                    v.props = jsObject<TabPanelProps> {
-                        type = TabPanelType.Horizontal(HorizontalDirection.LEFT)
-                        items = mutableListOf(jsObject {
-                            id = 1
-                            title = "Title"
-                            content = "Content"
-                            type = MenuItemType.LEFT
-                        })
-                    }
-                }
-            }
-            div("ui segment") {
-                +"Middle"
-            }
-            div("ui segment") {
-                +"Right"
-            }
-        }
-        div("ui segment") {
-            +"Footer"
-            v.bind.style { textAlign = "center" }
-        }
-    }
+    override fun VBuilder.render() = baseModuleTemplate()
 }
