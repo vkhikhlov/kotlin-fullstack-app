@@ -1,11 +1,6 @@
-private val version: String by project
-private val group: String by project
-val projectsVersion = version
-val projectsGroup = group
-
 allprojects {
-    version = projectsVersion
-    group = projectsGroup
+    version = property("version")
+    group = property("group")
 }
 
 buildscript {
