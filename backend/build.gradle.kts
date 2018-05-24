@@ -22,12 +22,13 @@ repositories {
     maven("https://dl.bintray.com/kotlin/exposed")
 }
 
+fun DependencyHandlerScope.ktor(module: String) = compile("io.ktor:ktor-$module:$ktorVersion")
+
 dependencies {
     compile(kotlin("stdlib-jdk8", kotlinVersion))
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-    compile("io.ktor:ktor-server-netty:$ktorVersion")
-    compile("io.ktor:ktor-gson:$ktorVersion")
-    compile("io.ktor:ktor-locations:$ktorVersion")
+    ktor("server-netty")
+    ktor("gson")
+    ktor("locations")
     compile("org.jetbrains.exposed:exposed:$exposedVersion")
     compile("com.h2database:h2:latest.release")
     compile("ch.qos.logback:logback-classic:latest.release")
