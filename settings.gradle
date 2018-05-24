@@ -1,4 +1,0 @@
-include 'frontend'
-include 'backend'
-
-rootProject.name = 'kotlin-fullstack-app'
