@@ -3,12 +3,16 @@ import org.jetbrains.kotlin.gradle.frontend.KotlinFrontendExtension
 import org.jetbrains.kotlin.gradle.frontend.npm.NpmExtension
 import org.jetbrains.kotlin.gradle.frontend.webpack.WebPackExtension
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+
+external fun compile(name: String)
+external fun FlatDirectoryArtifactRepository.dirs(vararg dirs: String)
+configure<KotlinProjectExtension> { experimental.coroutines = Coroutines.ENABLE }
 
 val production: String by project
 val kotlinVersion: String by project
 val kotlinxHtmlVersion: String by project
 val compileKotlin2Js: KotlinJsCompile by tasks
-kotlin.experimental.coroutines = Coroutines.ENABLE
 
 plugins {
     id("kotlin2js")
@@ -23,12 +27,11 @@ repositories {
                 "../../kotlin-vue-wrappers/kotlin-vue/build/libs",
                 "../../kotlin-vue-wrappers/kotlin-vue-extensions/build/libs"
         )
-
     }
 }
 
 dependencies {
-    compile(kotlin("stdlib-js", kotlinVersion))
+    compile(kotlin("stdlib-js", kotlinVersion) as String)
     compile("org.jetbrains.kotlinx:kotlinx-html-js:$kotlinxHtmlVersion")
     compile("com.github.vkhikhlov:kotlin-vue:0.0.6")
     compile("com.github.vkhikhlov:kotlin-vue-extensions:0.0.2")

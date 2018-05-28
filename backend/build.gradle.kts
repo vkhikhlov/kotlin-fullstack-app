@@ -1,11 +1,14 @@
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+
+external fun compile(name: String)
+configure<KotlinProjectExtension> { experimental.coroutines = Coroutines.ENABLE }
 
 val kotlinVersion: String by project
 val ktorVersion: String by project
 val exposedVersion: String by project
 val compileKotlin: KotlinCompile by tasks
-kotlin.experimental.coroutines = Coroutines.ENABLE
 compileKotlin.kotlinOptions.jvmTarget = "1.8"
 
 plugins {
@@ -25,7 +28,7 @@ repositories {
 fun DependencyHandlerScope.ktor(module: String) = compile("io.ktor:ktor-$module:$ktorVersion")
 
 dependencies {
-    compile(kotlin("stdlib-jdk8", kotlinVersion))
+    compile(kotlin("stdlib-jdk8", kotlinVersion) as String)
     ktor("server-netty")
     ktor("gson")
     ktor("locations")

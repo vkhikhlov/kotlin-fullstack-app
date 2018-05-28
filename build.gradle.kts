@@ -1,6 +1,6 @@
 allprojects {
-    version = property("version")
-    group = property("group")
+    setVersion(property("version")!!)
+    setGroup(property("group")!!)
 }
 
 buildscript {
