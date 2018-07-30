@@ -4,6 +4,7 @@ import vue.*
 import vue.ext.*
 import vue.vdom.*
 import vue.router.*
+import modules.articles.ArticleOptions
 
 interface AppComponent : VueComponent<VData, VProps, VRefs>
 
@@ -31,6 +32,15 @@ fun VBuilder.appTemplate() = div {
 
 object AppOptions : VueOptions<VData, VProps, VRefs, VComputed, AppComponent>(AppComponent::class) {
     override fun VBuilder.render() = appTemplate()
+    init {
+        router = Router(jsObject {
+            routes = arrayOf(jsObject {
+                path = "/articles"
+                component = ArticleOptions
+            })
+            mode = "history"
+        })
+    }
 }
 
 fun VBuilder.app(block: VBuilder.() -> Unit = {}) = child(AppOptions, block)

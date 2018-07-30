@@ -115,7 +115,7 @@ fun VBuilder.tabPanelTemplate(props: TabPanelProps) = div {
     }
 }
 
-object TabPanelOptions : VueOptions<VData, TabPanelProps, VRefs, VComputed, TabPanelComponent>(TabPanelComponent::class) {
+class TabPanelOptions : VueOptions<VData, TabPanelProps, VRefs, VComputed, TabPanelComponent>(TabPanelComponent::class) {
     init {
         props {
             type = jsObject { }
@@ -130,4 +130,4 @@ object TabPanelOptions : VueOptions<VData, TabPanelProps, VRefs, VComputed, TabP
     override fun VBuilder.render() = tabPanelTemplate(props)
 }
 
-fun VDOMBuilder<DIV>.tabPanel(block: VBuilderWithProps<TabPanelProps>.() -> Unit = { }) = child(TabPanelOptions, block)
+fun VDOMBuilder<DIV>.tabPanel(block: VBuilderWithProps<TabPanelProps>.() -> Unit = { }) = child(TabPanelOptions(), block)

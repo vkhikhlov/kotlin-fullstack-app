@@ -72,7 +72,7 @@ configure<KotlinFrontendExtension> {
         bundleName = "main"
         contentPath = file("src/main/resources")
         publicPath = if (production.toBoolean()) "/static/" else "/"
-        port = 8088
+        port = 8089
         mode = if (production.toBoolean()) "production" else "development"
     })
     define("PRODUCTION", production.toBoolean())
